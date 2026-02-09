@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>公民人文主義：深度探究 (穩定版)</title>
+    <style>
+        /* --- 基礎設定 --- */
+        :root {
+            --primary-color: #800000; /* 深栗紅 */
+            --bg-color: #222; /* 背景黑 */
+            --slide-bg: #fff; /* 投影片白 */
+            --text-color: #333;
+        }
+
+        body {
+            font-family: "Microsoft JhengHei", "PingFang TC", sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            height: 100vh;
+            overflow: hidden; /* 防止整個網頁出現捲軸 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* --- 投影片容器 --- */
+        #presentation-container {
+            width: 100%;
+            max-width: 1024px;
+            height: 85vh; /* 佔據螢幕高度 85% */
+            background-color: var(--slide-bg);
+            position: relative;
+            box-shadow: 0 0 50px rgba(0,0,0,0.8);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- 每一張投影片 --- */
+        .slide {
+            display: none; /* 預設完全隱藏 */
+            padding: 40px 80px; /* 左右留白給按鈕 */
+            height: 100%;
+            overflow-y: auto; /* 內容過多時允許內部捲動 */
+            box-sizing: border-box;
+        }
+
+        /* 啟動狀態：強制顯示 */
+        .slide.active {
+            display: block !important;
+        }
+
+        /* --- 內容排版 --- */
+        h1 {
+            color: var(--primary-color);
+            border-bottom: 4px solid #d4af37;
+            padding-bottom: 15px;
+            font-size: 2.2rem;
+            margin-top: 0;
+        }
+
+        h2 { font-size: 1.5rem; color: #555; margin: 10px 0; }
+        p, li { font-size: 1.3rem; line-height: 1.6; margin-bottom: 15px; }
+        
+        strong { color: #b71c1c; background: rgba(255, 200, 200, 0.3); padding: 0 5px; }
+
+        /* --- 深度解析按鈕 --- */
+        .deep-dive-btn {
+            background-color: #eee;
+            color: #333;
+            border: 1px solid #ccc;
+            padding: 10px 20px;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+
+        .deep-dive-btn:hover { background-color: #e0e0e0; }
+
+        .deep-dive-content {
+            display: none;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-left: 5px solid #d4af37;
+            margin-top: 10px;
+            font-size: 1.1rem;
+        }
+
+        /* --- 左右切換按鈕 (固定懸浮) --- */
+        .nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0,0,0,0.1);
+            color: #333;
+            border: none;
+            width: 60px;
+            height: 100px;
+            font-size: 30px;
+            cursor: pointer;
+            z-index: 100; /* 確保在最上層 */
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-btn:hover {
+            background-color: rgba(128, 0, 0, 0.8);
+            color: white;
+        }
+
+        #prevBtn { left: 0; border-top-right-radius: 10px; border-bottom-right-radius: 10px; }
+        #nextBtn { right: 0; border-top-left-radius: 10px; border-bottom-left-radius: 10px; }
+
+        /* --- 底部頁碼 --- */
+        .footer-info {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 40px;
+            background: #f1f1f1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1rem;
+            color: #666;
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+        }
+
+        /* 手機版調整 */
+        @media (max-width: 600px) {
+            .slide { padding: 20px 40px; }
+            h1 { font-size: 1.5rem; }
+            p, li { font-size: 1rem; }
+            .nav-btn { width: 40px; height: 60px; font-size: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="presentation-container">
+    
+    <button id="prevBtn" class="nav-btn" onclick="changeSlide(-1)">❮</button>
+    <button id="nextBtn" class="nav-btn" onclick="changeSlide(1)">❯</button>
+
+    <div class="slide active">
+        <div style="text-align: center; margin-top: 15%;">
+            <h1>公民人文主義</h1>
+            <h2>Civic Humanism</h2>
+            <hr style="width: 50%; border-color: #d4af37; margin: 30px auto;">
+            <p>15 講深度探究課程</p>
+            <p style="font-size: 1rem; color: #888;">請使用鍵盤左右鍵或螢幕兩側按鈕切換</p>
+        </div>
+    </div>
+
+    <div class="slide">
+        <h1>01. 什麼是公民人文主義？</h1>
+        <p>這是一個歷史學概念，描述 14-15 世紀義大利（特別是佛羅倫斯）出現的一種思想轉向。</p>
+        <ul>
+            <li><strong>核心定義：</strong>將古典學術 (Humanism) 與積極的政治生活 (Civic Life) 結合。</li>
+            <li><strong>關鍵區別：</strong>
+                <ul>
+                    <li>一般人文主義：專注文學、翻譯、個人修養。</li>
+                    <li><strong>公民人文主義</strong>：認為學問必須用來<strong>服務國家</strong>，強調共和自由。</li>
+                </ul>
+            </li>
+        </ul>
+        <button class="deep-dive-btn" onclick="toggleDeepDive(this)">🎓 深度解析：術語的由來 (點擊展開)</button>
+        <div class="deep-dive-content">
+            這個詞並非文藝復興人自稱，而是現代歷史學家 <strong>漢斯·巴倫 (Hans Baron)</strong> 在 1920 年代發明的。他認為這是一種特殊的歷史現象，將「學術」從修道院帶入了「市政廳」。
+        </div>
+    </div>
+
+    <div class="slide">
+        <h1>02. 巴倫假說 (The Baron Thesis)</h1>
+        <p>巴倫認為，公民人文主義的誕生並非自然演變，而是一次歷史的「突變」。</p>
+        <ul>
+            <li><strong>觀點：</strong>文藝復興早期的人文主義原本是「避世」的。</li>
+            <li><strong>轉折：</strong>在一場特定的<strong>政治危機</strong>後，人文主義才變得「入世」且「政治化」。</li>
+        </ul>
+        <button class="deep-dive-btn" onclick="toggleDeepDive(this)">🎓 深度解析：學術爭論</button>
+        <div class="deep-dive-content">
+            巴倫的《義大利文藝復興早期的危機》(1955) 是經典之作。其核心論點——「政治環境形塑了思想內容」——至今仍是重要的歷史解釋框架。
+        </div>
+    </div>
+
+    <div class="slide">
+        <h1>03. 歷史現場：1402年的危機</h1>
+        <p>哪場危機改變了一切？</p>
+        <ul>
+            <li><strong>威脅者：</strong>米蘭公爵維斯孔蒂 (Visconti)。他試圖統一義大利北部，建立專制王國。</li>
+            <li><strong>受困者：</strong>佛羅倫斯。到 1402 年，已被包圍，孤立無援。</li>
+            <li><strong>意義：</strong>這不僅是軍事對抗，更是<strong>「暴政 vs. 自由」</strong>的意識形態之戰。</li>
+        </ul>
+        <button class="deep-dive-btn" onclick="toggleDeepDive(this)">🎓 深度解析：偶然的歷史</button>
+        <div class="deep-dive-content">
+            1402 年夏天，米蘭大軍準備總攻。但在 9 月，公爵突然死於瘟疫。米蘭軍隊崩潰，佛羅倫斯奇蹟倖存。這次倖存被解釋為「上帝對自由的眷顧」。
+        </div>
+    </div>
+
+    <div class="slide">
+        <h1>04. 核心價值 I：積極生活</h1>
+        <p>中世紀傳統推崇「沉思生活」(修道)。公民人文主義翻轉了這個價值觀。</p>
+        <ul>
+            <li><strong>入世精神：</strong>人是社會的動物（亞里斯多德）。</li>
+            <li><strong>家庭與財富：</strong>經營家庭、累積財富並回饋社會，是榮耀的公民責任，而非罪惡。</li>
+        </ul>
+        <button class="deep-dive-btn" onclick="toggleDeepDive(this)">🎓 深度解析：西賽羅的復興</button>
+        <div class="deep-dive-content">
+            他們重新發現了羅馬政治家西賽羅的價值。西賽羅既是哲學家又是政治家，這成為了新典範：一個有學問的人，必須運用智慧來治理國家。
+        </div>
+    </div>
+
+    <div class="slide">
+        <h1>05. 核心價值 II：共和自由</h1>
+        <p>這裡的「自由」與現代意義不同。</p>
+        <ul>
+            <li><strong>現代自由 (Liberalism)：</strong>免受干涉（我想做什麼就做什麼）。</li>
+            <li><strong>共和自由 (Republicanism)：</strong><strong>不被支配的自由</strong>。
+                <ul>
+                    <li>即使一個仁慈的國王對你很好，你仍是「奴隸」，因為你的命運掌握在他手中。</li>
+                    <li>唯有能自我治理的公民，才是自由人。</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <div class="slide">
+        <h1>06. 關鍵人物：李奧納多·布魯尼</h1>
+        <p><strong>Leonardo Bruni (1370–1444)</strong> 是公民人文主義的代表。</p>
+        <ul>
+            <li><strong>身分：</strong>佛羅倫斯共和國的總理 (Chancellor)。</li>
+            <li><strong>成就：</strong>
+                <ol>
+                    <li>翻譯亞里斯多德《政治學》：將希臘民主觀念帶入拉丁世界。</li>
+                    <li>撰寫《佛羅倫斯人民史》：第一部現代意義的歷史書。</li>
+                </ol>
+            </li>
+        </ul>
+    </div>
+
+    <div class="slide">
+        <h1>07. 歷史觀的重塑：兩個羅馬</h1>
+        <p>布魯尼等人提出了革命性的歷史觀點：</p>
+        <ul>
+            <li><strong>共和羅馬 vs. 帝國羅馬：</strong></li>
+            <li>羅馬的黃金時代是<strong>「共和時期」</strong>。</li>
+            <li>凱撒不是英雄，而是摧毀自由的<strong>「暴君」</strong>。</li>
+            <li>羅馬帝國建立之日，就是羅馬美德衰亡之時。</li>
+        </ul>
+    </div>
+
+    <div class="slide">
+        <h1>08. 語言的力量：修辭學</h1>
+        <p>為什麼人文主義者重視演講？</p>
+        <ul>
+            <li><strong>哲學 vs. 修辭：</strong>哲學尋求真理，但修辭能<strong>「驅動意志」</strong>。</li>
+            <li><strong>政治工具：</strong>在共和國，政策需要公民投票通過。你必須能說服大眾，才能推動公共利益。</li>
+        </ul>
+        <button class="deep-dive-btn" onclick="toggleDeepDive(this)">🎓 深度解析：讚頌詞 (Laudatio)</button>
+        <div class="deep-dive-content">
+            布魯尼寫的《佛羅倫斯讚詞》，將城市描繪成完美的正義化身。這既是哲學信仰，也是戰爭時期的政治宣傳 (Propaganda)。
+        </div>
+    </div>
+
+    <div class="slide">
+        <h1>09. 教育觀：人文學科</h1>
+        <p>教育改革的核心是「人文學科 (Studia Humanitatis)」。</p>
+        <ul>
+            <li><strong>目的：</strong>不是培養僧侶，而是培養<strong>「自由人」</strong>。</li>
+            <li><strong>科目：</strong>歷史（學教訓）、道德哲學（學做人）、修辭（學表達）。</li>
+            <li><strong>信念：</strong>閱讀經典可以培養「美德」，有美德的公民才能維持共和國。</li>
+        </ul>
+    </div>
+
+    <div class="slide">
+        <h1>10. 馬基維利的轉折</h1>
+        <p>公民人文主義的繼承者與終結者：馬基維利。</p>
+        <ul>
+            <li><strong>繼承：</strong>他繼承了「共和自由」和「公民軍隊」的理想。</li>
+            <li><strong>決裂：</strong>他拋棄了「人性本善」的幻想。</li>
+            <li><strong>現實主義：</strong>若要保衛自由，光靠仁慈是不夠的，有時必須像野獸一樣兇猛。</li>
+        </ul>
+    </div>
+
+    <div class="slide">
+        <h1>11. 批判視角 I：誰的自由？</h1>
+        <p>我們不能過度浪漫化這段歷史。</p>
+        <ul>
+            <li><strong>菁英主義：</strong>所謂的「積極公民」通常指有錢、有閒的男性貴族。勞工、婦女被排除在外。</li>
+            <li><strong>寡頭政治：</strong>佛羅倫斯雖然號稱共和，實際上常由幾個大家族把持。</li>
+        </ul>
+    </div>
+
+    <div class="slide">
+        <h1>12. 批判視角 II：對外壓迫</h1>
+        <p>佛羅倫斯自稱「自由捍衛者」，但對鄰居來說卻不是。</p>
+        <ul>
+            <li><strong>帝國主義：</strong>佛羅倫斯在此期間征服了比薩、阿雷佐等城市。</li>
+            <li><strong>雙重標準：</strong>內部講求自由，對外實行帝國統治。</li>
+        </ul>
+    </div>
+
+    <div class="slide">
+        <h1>13. 現代遺產</h1>
+        <p>為什麼今天要學這個？</p>
+        <ul>
+            <li><strong>社群主義：</strong>對抗現代過度的個人主義。提醒我們人是社群的一部分。</li>
+            <li><strong>公民參與：</strong>民主不只是投票，而是持續的關注。</li>
+            <li><strong>大西洋共和傳統：</strong>這套思想後來影響了美國建國國父（如傑佛遜）。</li>
+        </ul>
+    </div>
+
+    <div class="slide">
+        <h1>14. 總結與討論</h1>
+        <p><strong>回顧重點：</strong></p>
+        <ol>
+            <li>危機激發了政治意識 (1402)。</li>
+            <li>積極生活優於沉思生活。</li>
+            <li>自由意味著參與和不被支配。</li>
+        </ol>
+        <button class="deep-dive-btn" onclick="toggleDeepDive(this)">🤔 思考題</button>
+        <div class="deep-dive-content">
+            在當代社會，我們是否過度強調了「消極自由」（不被政府管），而遺忘了「積極自由」（參與管理眾人之事）？
+        </div>
+    </div>
+
+    <div class="slide">
+        <h1>15. 延伸閱讀</h1>
+        <ul>
+            <li><strong>Hans Baron:</strong> The Crisis of the Early Italian Renaissance.</li>
+            <li><strong>J.G.A. Pocock:</strong> The Machiavellian Moment.</li>
+            <li><strong>Quentin Skinner:</strong> The Foundations of Modern Political Thought.</li>
+        </ul>
+    </div>
+
+    <div class="footer-info">
+        頁數：<span id="page-indicator" style="margin-left: 5px; font-weight: bold;">1 / 16</span>
+    </div>
+
+</div>
+
+<script>
+    // --- 腳本邏輯 ---
+    
+    // 定義變數
+    let currentSlideIndex = 0; // 從 0 開始算比較好處理陣列
+    let slides = [];
+    const pageIndicator = document.getElementById("page-indicator");
+
+    // 確保網頁載入後執行
+    document.addEventListener("DOMContentLoaded", function() {
+        slides = document.querySelectorAll(".slide");
+        updateSlideVisibility();
+    });
+
+    // 切換函數
+    function changeSlide(direction) {
+        // 更新索引
+        let newIndex = currentSlideIndex + direction;
+
+        // 邊界檢查 (防止超過最後一頁或小於第一頁)
+        if (newIndex < 0) newIndex = 0;
+        if (newIndex >= slides.length) newIndex = slides.length - 1;
+
+        // 如果索引沒變 (例如已經在最後一頁又按下一頁)，就不動作
+        if (newIndex === currentSlideIndex) return;
+
+        currentSlideIndex = newIndex;
+        updateSlideVisibility();
+    }
+
+    // 更新畫面顯示
+    function updateSlideVisibility() {
+        if (slides.length === 0) return;
+
+        // 隱藏所有
+        slides.forEach(slide => {
+            slide.classList.remove("active");
+        });
+
+        // 顯示當前
+        slides[currentSlideIndex].classList.add("active");
+
+        // 更新頁碼文字
+        if (pageIndicator) {
+            pageIndicator.textContent = (currentSlideIndex + 1) + " / " + slides.length;
+        }
+
+        // 更新按鈕狀態 (視覺回饋)
+        document.getElementById("prevBtn").style.opacity = currentSlideIndex === 0 ? "0.3" : "1";
+        document.getElementById("nextBtn").style.opacity = currentSlideIndex === slides.length - 1 ? "0.3" : "1";
+    }
+
+    // 鍵盤監聽
+    document.addEventListener('keydown', function(event) {
+        if (event.key === "ArrowRight" || event.key === " " || event.key === "Enter") {
+            changeSlide(1);
+        } else if (event.key === "ArrowLeft") {
+            changeSlide(-1);
+        }
+    });
+
+    // 深度解析展開/收合
+    function toggleDeepDive(btn) {
+        const content = btn.nextElementSibling;
+        if (content.style.display === "block") {
+            content.style.display = "none";
+        } else {
+            content.style.display = "block";
+            // 讓內容自動捲動到可見範圍
+            content.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        }
+    }
+</script>
+
+</body>
+</html>
